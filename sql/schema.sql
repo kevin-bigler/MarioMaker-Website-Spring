@@ -23,3 +23,11 @@ CREATE TABLE `course` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `level_code` (`level_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+- Player
+CREATE TABLE `course` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `level_code` (`level_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
