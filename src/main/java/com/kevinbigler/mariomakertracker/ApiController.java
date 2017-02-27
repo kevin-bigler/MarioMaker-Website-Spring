@@ -1,6 +1,7 @@
 package com.kevinbigler.mariomakertracker;
 
 import com.kevinbigler.mariomakertracker.entity.Course;
+import com.kevinbigler.mariomakertracker.entity.projection.CoursePreview;
 import com.kevinbigler.mariomakertracker.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,16 @@ public class ApiController {
         testValues.forEach(val -> System.out.println("test: " + val + " => " + (val.matches(regex) ? "yes" : "no")));
 
         return "regexTest()";
+    }
+
+    @RequestMapping(path = "/course-previews", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<CoursePreview> getAllCoursePreviews() {
+        return courseService.getAllCoursePreviews();
+    }
+
+    @RequestMapping(path = "/course-previews/{nintendo_id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public CoursePreview getCoursePreviewByNintendoId(@PathVariable(name = "nintendo_id") String nintendoId) {
+        return courseService.getCoursePreviewByNintendoId(nintendoId);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

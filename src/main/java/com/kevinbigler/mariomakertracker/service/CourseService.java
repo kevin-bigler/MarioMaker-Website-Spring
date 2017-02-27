@@ -1,6 +1,8 @@
 package com.kevinbigler.mariomakertracker.service;
 
 import com.kevinbigler.mariomakertracker.entity.Course;
+import com.kevinbigler.mariomakertracker.entity.projection.CoursePreview;
+import com.kevinbigler.mariomakertracker.entity.repository.CoursePreviewRepository;
 import com.kevinbigler.mariomakertracker.entity.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class CourseService {
 
     @Autowired
     CourseRepository courseRepository;
+
+    @Autowired
+    CoursePreviewRepository coursePreviewRepository;
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
@@ -33,5 +38,13 @@ public class CourseService {
         to = to * 0.01D;
 
         return courseRepository.findByClearRateBetween(from, to);
+    }
+
+    public CoursePreview getCoursePreviewByNintendoId(String nintendoId) {
+        return coursePreviewRepository.findByNintendoId(nintendoId);
+    }
+
+    public List<CoursePreview> getAllCoursePreviews() {
+        return coursePreviewRepository.findAllProjectedBy();
     }
 }
