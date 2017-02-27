@@ -65,4 +65,14 @@ public class ApiController {
 //        e.printStackTrace();
         System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
+
+    @RequestMapping("/courses/create-test/{nintendo_id}")
+    public void coursesCreateTest(@PathVariable("nintendo_id") String nintendoId) {
+        courseService.createTest(nintendoId);
+    }
+
+    @RequestMapping("/courses/update-test")
+    public void coursesUpdateTest() {
+        courseService.updateTest();
+    }
 }

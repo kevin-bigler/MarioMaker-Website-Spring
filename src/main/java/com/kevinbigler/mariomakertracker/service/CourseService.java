@@ -47,4 +47,25 @@ public class CourseService {
     public List<CoursePreview> getAllCoursePreviews() {
         return coursePreviewRepository.findAllProjectedBy();
     }
+
+    public void createTest(String nintendoId) {
+        Course course = new Course();
+        course.setNintendoId(nintendoId);
+        course.setMainImageUrl("abc");
+        course.setName("Test Course Create");
+        course.setStarCount(Integer.valueOf(7));
+        course.setStyle("SMW");
+        course.setWorldRecordHolder("Japanese Epic Dude");
+        course.setWorldRecordTime("0:05.3210");
+
+        courseRepository.save(course);
+    }
+
+    public void updateTest() {
+        Course course = courseRepository.findByNintendoId("7287-0000-02B2-7022");
+        course.setWorldRecordHolder("Ryukhar");
+        course.setWorldRecordTime("0:35.50");
+
+        courseRepository.save(course);
+    }
 }

@@ -21,12 +21,12 @@ CREATE TABLE `course` (
   `clear_rate` text DEFAULT NULL,
   `star_count` text DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `level_code` (`level_code`)
+  UNIQUE KEY `nintendo_id` (`nintendo_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 - Player
-CREATE TABLE `course` (
+CREATE TABLE `player` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   UNIQUE KEY `level_code` (`level_code`)
