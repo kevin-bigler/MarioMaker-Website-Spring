@@ -53,9 +53,9 @@ public class CourseService {
         course.setNintendoId(nintendoId);
         course.setMainImageUrl("abc");
         course.setName("Test Course Create");
-        course.setStarCount(Integer.valueOf(7));
-        course.setStyle("SMW");
-        course.setWorldRecordHolder("Japanese Epic Dude");
+        course.setNumberStars(7);
+        course.setGameskin("SMW");
+        course.setWorldRecordHolderNintendoId("Japanese Epic Dude");
         course.setWorldRecordTime("0:05.3210");
 
         courseRepository.save(course);
@@ -63,7 +63,7 @@ public class CourseService {
 
     public void updateTest() {
         Course course = courseRepository.findByNintendoId("7287-0000-02B2-7022");
-        course.setWorldRecordHolder("Ryukhar");
+        course.setWorldRecordHolderNintendoId("Ryukhar");
         course.setWorldRecordTime("0:35.50");
 
         courseRepository.save(course);

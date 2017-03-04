@@ -14,4 +14,6 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
     List<Course> findAllByNameIgnoreCaseContaining(String name);
     Course findByNintendoId(String nintendoId);
     List<Course> findByClearRateBetween(Double from, Double to);
+
+    void deleteByNintendoId(String nintendoId);
 }
