@@ -4,10 +4,9 @@ import com.kevinbigler.mariomakertracker.common.DateUtils;
 import com.kevinbigler.mariomakertracker.entity.Course;
 import com.kevinbigler.mariomakertracker.entity.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 
 /**
@@ -20,7 +19,7 @@ public class TestController {
     @Autowired
     CourseRepository courseRepository;
 
-    @RequestMapping("/create-course/course-detail-page")
+    @RequestMapping(value = "/create-course/course-detail-page", method = RequestMethod.GET)
     @ResponseBody
     public String testCreateCourseFromCourseDetailPage() {
         String nintendoId = "DC0C-0000-02AD-6EBC";
@@ -32,7 +31,7 @@ public class TestController {
         course.setNintendoId(nintendoId);
         course.setName("Old Dog, New Tricks");
         course.setCreatorNintendoId("thek3vinator");
-        course.setCreator(null);
+//        course.setCreator(null);
         course.setMainImageUrl("https://dypqnhofrd2x2.cloudfront.net/DC0C-0000-02AD-6EBC.jpg");
         course.setFullImageUrl("https://dypqnhofrd2x2.cloudfront.net/DC0C-0000-02AD-6EBC_full.jpg");
 
@@ -50,20 +49,44 @@ public class TestController {
         course.setTag("---");
         course.setWorldRecordTime("04:51.955");
         course.setWorldRecordHolderNintendoId("EgixBacon");
-        course.setWorldRecordHolder(null);
+//        course.setWorldRecordHolder(null);
         course.setFirstClearPlayerNintendoId("GeoKureli");
-        course.setFirstClearPlayer(null);
+//        course.setFirstClearPlayer(null);
         course.setRecentPlayersNintendoIds("eaustinr,xxmegankayxx,muhi0217");
-        course.setRecentPlayers(null);
+//        course.setRecentPlayers(null);
         course.setClearedByPlayersNintendoIds("awesome_world-25,Itsaname42,MeltyG");
-        course.setClearedByPlayers(null);
+//        course.setClearedByPlayers(null);
         course.setStarredByPlayersNintendoIds("cruzlucas,awesome_world-25,JToad1001");
-        course.setStarredByPlayers(null);
+//        course.setStarredByPlayers(null);
         course.setCreated(new Timestamp(System.currentTimeMillis()));
         course.setUpdated(null);
 
         courseRepository.save(course);
 
         return "testCreateCourseFromCourseDetailPage()";
+    }
+
+    @RequestMapping(value = "/delete-course/{nintendo_id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String testDeleteCourseByNintendoId(@PathVariable("nintendo_id") String nintendoId) {
+        if (courseRepository.findByNintendoId(nintendoId) == null) {
+            return "no resource found";
+        }
+
+        courseRepository.deleteByNintendoId(nintendoId);
+
+        if (courseRepository.findByNintendoId(nintendoId) == null) {
+            return "resource deleted successfully";
+        } else {
+            return "failed to delete resource";
+        }
+
+    }
+
+    @RequestMapping(value = "/scrape/course-page", method = RequestMethod.GET)
+    @ResponseBody
+    public String testScrapeCoursePage(@PathVariable("nintendo_id") String nintendoId) {
+        // TODO
+        return null;
     }
 }

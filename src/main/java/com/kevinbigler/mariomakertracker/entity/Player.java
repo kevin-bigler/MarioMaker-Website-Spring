@@ -13,11 +13,21 @@ public class Player {
     @GeneratedValue
     private Long id;
 
+    private String nintendoId;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNintendoId() {
+        return nintendoId;
+    }
+
+    public void setNintendoId(String nintendoId) {
+        this.nintendoId = nintendoId;
     }
 }

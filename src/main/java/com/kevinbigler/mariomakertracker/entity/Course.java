@@ -1,11 +1,9 @@
 package com.kevinbigler.mariomakertracker.entity;
 
 import com.kevinbigler.mariomakertracker.entity.projection.PlayerPreview;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -25,7 +23,9 @@ public class Course {
 
     private String name;    // or "title"
 
-    private PlayerPreview creator;
+//    @ManyToOne
+//    @JoinColumn(name="creator_id")
+//    private PlayerPreview creator;
 
     private String creatorNintendoId;
 
@@ -59,25 +59,43 @@ public class Course {
 
     private String tag;
 
-    private PlayerPreview worldRecordHolder;
+//    @ManyToOne
+//    @JoinColumn(name="world_record_holder_id")
+//    private PlayerPreview worldRecordHolder;
 
     private String worldRecordHolderNintendoId;
 
     private String worldRecordTime;
 
-    private PlayerPreview firstClearPlayer;
+//    @ManyToOne
+//    @JoinColumn(name="first_clear_player_id")
+//    private PlayerPreview firstClearPlayer;
 
     private String firstClearPlayerNintendoId;
 
-    private Set<PlayerPreview> recentPlayers;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "book_publisher",
+//            joinColumns = @JoinColumn(
+//                    name = "book_id",
+//                    referencedColumnName = "id"
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "publisher_id",
+//                    referencedColumnName = "id"
+//            )
+//    )
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy="owner", cascade = {CascadeType.ALL}, orphanRemoval=true)
+//    @Where(clause="field=1")
+//    private Set<PlayerPreview> recentPlayers;
 
     private String recentPlayersNintendoIds;
 
-    private Set<PlayerPreview> clearedByPlayers;
+//    private Set<PlayerPreview> clearedByPlayers;
 
     private String clearedByPlayersNintendoIds;
 
-    private Set<PlayerPreview> starredByPlayers;
+//    private Set<PlayerPreview> starredByPlayers;
 
     private String starredByPlayersNintendoIds;
 
@@ -109,13 +127,13 @@ public class Course {
         this.name = name;
     }
 
-    public PlayerPreview getCreator() {
-        return creator;
-    }
-
-    public void setCreator(PlayerPreview creator) {
-        this.creator = creator;
-    }
+//    public PlayerPreview getCreator() {
+//        return creator;
+//    }
+//
+//    public void setCreator(PlayerPreview creator) {
+//        this.creator = creator;
+//    }
 
     public String getCreatorNintendoId() {
         return creatorNintendoId;
@@ -165,13 +183,13 @@ public class Course {
         this.miiverseCommentsUrl = miiverseCommentsUrl;
     }
 
-    public PlayerPreview getWorldRecordHolder() {
-        return worldRecordHolder;
-    }
-
-    public void setWorldRecordHolder(PlayerPreview worldRecordHolder) {
-        this.worldRecordHolder = worldRecordHolder;
-    }
+//    public PlayerPreview getWorldRecordHolder() {
+//        return worldRecordHolder;
+//    }
+//
+//    public void setWorldRecordHolder(PlayerPreview worldRecordHolder) {
+//        this.worldRecordHolder = worldRecordHolder;
+//    }
 
     public String getWorldRecordTime() {
         return worldRecordTime;
@@ -261,13 +279,13 @@ public class Course {
         this.worldRecordHolderNintendoId = worldRecordHolderNintendoId;
     }
 
-    public PlayerPreview getFirstClearPlayer() {
-        return firstClearPlayer;
-    }
-
-    public void setFirstClearPlayer(PlayerPreview firstClearPlayer) {
-        this.firstClearPlayer = firstClearPlayer;
-    }
+//    public PlayerPreview getFirstClearPlayer() {
+//        return firstClearPlayer;
+//    }
+//
+//    public void setFirstClearPlayer(PlayerPreview firstClearPlayer) {
+//        this.firstClearPlayer = firstClearPlayer;
+//    }
 
     public String getFirstClearPlayerNintendoId() {
         return firstClearPlayerNintendoId;
@@ -277,13 +295,13 @@ public class Course {
         this.firstClearPlayerNintendoId = firstClearPlayerNintendoId;
     }
 
-    public Set<PlayerPreview> getRecentPlayers() {
-        return recentPlayers;
-    }
-
-    public void setRecentPlayers(Set<PlayerPreview> recentPlayers) {
-        this.recentPlayers = recentPlayers;
-    }
+//    public Set<PlayerPreview> getRecentPlayers() {
+//        return recentPlayers;
+//    }
+//
+//    public void setRecentPlayers(Set<PlayerPreview> recentPlayers) {
+//        this.recentPlayers = recentPlayers;
+//    }
 
     public String getRecentPlayersNintendoIds() {
         return recentPlayersNintendoIds;
@@ -293,13 +311,13 @@ public class Course {
         this.recentPlayersNintendoIds = recentPlayersNintendoIds;
     }
 
-    public Set<PlayerPreview> getClearedByPlayers() {
-        return clearedByPlayers;
-    }
-
-    public void setClearedByPlayers(Set<PlayerPreview> clearedByPlayers) {
-        this.clearedByPlayers = clearedByPlayers;
-    }
+//    public Set<PlayerPreview> getClearedByPlayers() {
+//        return clearedByPlayers;
+//    }
+//
+//    public void setClearedByPlayers(Set<PlayerPreview> clearedByPlayers) {
+//        this.clearedByPlayers = clearedByPlayers;
+//    }
 
     public String getClearedByPlayersNintendoIds() {
         return clearedByPlayersNintendoIds;
@@ -309,13 +327,13 @@ public class Course {
         this.clearedByPlayersNintendoIds = clearedByPlayersNintendoIds;
     }
 
-    public Set<PlayerPreview> getStarredByPlayers() {
-        return starredByPlayers;
-    }
-
-    public void setStarredByPlayers(Set<PlayerPreview> starredByPlayers) {
-        this.starredByPlayers = starredByPlayers;
-    }
+//    public Set<PlayerPreview> getStarredByPlayers() {
+//        return starredByPlayers;
+//    }
+//
+//    public void setStarredByPlayers(Set<PlayerPreview> starredByPlayers) {
+//        this.starredByPlayers = starredByPlayers;
+//    }
 
     public String getStarredByPlayersNintendoIds() {
         return starredByPlayersNintendoIds;
