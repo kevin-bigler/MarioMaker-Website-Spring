@@ -19,32 +19,27 @@ public class CoursePageScraper implements Scraper {
     private String nintendoId;
     private Course scrapedCourse;
 
+    private static String COURSE_URL_PREFIX = "https://supermariomakerbookmark.nintendo.net/courses/";
+
     public CoursePageScraper(String nintendoId) {
         this.nintendoId = nintendoId;
     }
 
     @Override
     public void scrape() {
-        // TODO
-        String csvEndpoint = "http://bublitzmaterialhandling.local.com/test-csv";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.TEXT_PLAIN));
 
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(csvEndpoint, HttpMethod.GET, entity, String.class);
-
-        System.out.println("HTTP Status: " + response.getStatusCode().toString());
-
-        System.out.println("Body:");
-        System.out.println("---------------------------------");
-        System.out.println(response.getBody());
-        System.out.println("---------------------------------");
     }
 
+    public String getCourseUrl() {
+        if (nintendoId == null || nintendoId.isEmpty()) {
+            throw new IllegalStateException("Nintendo ID not set.");
+        }
+
+        return COURSE_URL_PREFIX + nintendoId;
+    }
+
+    // TODO use something like this for getting images
     private void scrapeFile(String fileUrl) {
         String fileNameOriginal = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         String extension = fileUrl.substring(fileUrl.lastIndexOf("."));
