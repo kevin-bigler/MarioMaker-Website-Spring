@@ -13,7 +13,7 @@ public class ScraperService {
 //    @Value("${mariomakertracker.scrape-url.course-prefix}")
 //    private String scrapeUrlCoursePrefix;
 
-    public void scrapeCoursePage(String nintendoId) {
+    public void scrapeCoursePage(String nintendoId) throws Exception {
         Scraper scraper = new CoursePageScraper(nintendoId);
         scraper.scrape();
     }

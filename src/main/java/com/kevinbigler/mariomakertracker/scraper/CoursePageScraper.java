@@ -1,10 +1,14 @@
 package com.kevinbigler.mariomakertracker.scraper;
 
+import com.kevinbigler.mariomakertracker.common.MMUtils;
+import com.kevinbigler.mariomakertracker.common.RestUtils;
 import com.kevinbigler.mariomakertracker.entity.Course;
+import com.kevinbigler.mariomakertracker.exception.CourseNotFoundException;
 import org.springframework.http.*;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,9 +30,28 @@ public class CoursePageScraper implements Scraper {
     }
 
     @Override
-    public void scrape() {
+    public void scrape() throws Exception {
+        // check that the nintendoId is not null
+        if (nintendoId == null || nintendoId.isEmpty()) {
+            throw new IllegalStateException("Nintendo ID not set");
+        }
 
+        // check that the nintendoId is properly formatted
+        if ( ! MMUtils.isCourseNintendoIdValid(nintendoId) ) {
+            throw new IllegalArgumentException("Nintendo ID is in an invalid format. Nintendo ID: " + nintendoId);
+        }
 
+        RestUtils restUtils = new RestUtils();
+        ResponseEntity<String> responseEntity = restUtils.getAsText(getCourseUrl());
+
+        if (responseEntity.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new CourseNotFoundException("Course does not exist on MarioMaker website");
+        }
+        else if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new CourseNotFoundException("Course URL returned an unexpected HTTP Status Code: " + responseEntity.getStatusCode().toString());
+        }
+
+        
     }
 
     public String getCourseUrl() {

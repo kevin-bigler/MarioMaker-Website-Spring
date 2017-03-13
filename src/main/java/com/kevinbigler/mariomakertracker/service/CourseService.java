@@ -21,11 +21,17 @@ public class CourseService {
     @Autowired
     CoursePreviewRepository coursePreviewRepository;
 
+    @Autowired
+    ScraperService scraperService;
+
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
 
-    public Course getCourseByNintendoId(String nintendoId) {
+    public Course getCourseByNintendoId(String nintendoId) throws Exception {
+        if ( ! courseRepository.existsByNintendoId(nintendoId) ) {
+            scraperService.scrapeCoursePage(nintendoId);
+        }
         return courseRepository.findByNintendoId(nintendoId);
     }
 
@@ -67,5 +73,10 @@ public class CourseService {
         course.setWorldRecordTime("0:35.50");
 
         courseRepository.save(course);
+    }
+
+    public Course getLiveData(String nintendoId) throws Exception {
+        scraperService.scrapeCoursePage(nintendoId);
+        return courseRepository.findByNintendoId(nintendoId);
     }
 }

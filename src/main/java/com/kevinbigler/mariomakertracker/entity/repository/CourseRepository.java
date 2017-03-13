@@ -19,5 +19,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Transactional
     void deleteByNintendoId(String nintendoId);
-//    void removeByNintendoId(String nintendoId);
+
+    boolean existsByNintendoId(String nintendoId);
 }
