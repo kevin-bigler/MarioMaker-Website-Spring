@@ -1,16 +1,14 @@
 package com.kevinbigler.mariomakertracker.scraper;
 
 import com.google.common.collect.ImmutableMap;
+import com.kevinbigler.mariomakertracker.exception.MissingScrapeValueException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Kevin on 3/14/2017.
@@ -96,7 +94,7 @@ public class ScrapeHelper {
             });
         });
 
-        String resultString = StringUtils.join(resultTokens);
+        String resultString = StringUtils.join(resultTokens, "");
 
         return resultString;
     }
@@ -119,5 +117,21 @@ public class ScrapeHelper {
             playerNintendoIds.add(getPlayerNintendoIdFromProfileUrl(el.attr("abs:href")));
         });
         return playerNintendoIds;
+    }
+
+    public String getGameskin(Element element) throws MissingScrapeValueException {
+        // -- mode (SMB1, SMB2, SMW, NSMB)
+        Map<String, String> gameskinSelectors = new HashMap<>(new ImmutableMap.Builder<String, String>()
+                .put("SMB1", ".course-meta-info .common_gs_sb")
+                .put("SMB3", ".course-meta-info .common_gs_sb3")
+                .put("SMW", ".course-meta-info .common_gs_sw")
+                .put("NSMB", ".course-meta-info .common_gs_sbu")
+                .build());
+
+        return gameskinSelectors.entrySet().stream()
+                .filter(map -> ! element.select(map.getValue()).isEmpty())
+                .map(map -> map.getKey())
+                .findFirst()
+                .orElseThrow(() -> new MissingScrapeValueException("Gameskin could not be determined."));
     }
 }

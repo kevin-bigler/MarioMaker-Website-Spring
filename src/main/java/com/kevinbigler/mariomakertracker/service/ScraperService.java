@@ -1,5 +1,6 @@
 package com.kevinbigler.mariomakertracker.service;
 
+import com.kevinbigler.mariomakertracker.pojo.CoursePageScrapePojo;
 import com.kevinbigler.mariomakertracker.scraper.CoursePageScraper;
 import com.kevinbigler.mariomakertracker.scraper.Scraper;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +14,8 @@ public class ScraperService {
 //    @Value("${mariomakertracker.scrape-url.course-prefix}")
 //    private String scrapeUrlCoursePrefix;
 
-    public void scrapeCoursePage(String nintendoId) throws Exception {
+    public CoursePageScrapePojo scrapeCoursePage(String nintendoId) throws Exception {
         Scraper scraper = new CoursePageScraper(nintendoId);
-        scraper.scrape();
+        return (CoursePageScrapePojo) scraper.scrape();
     }
 }

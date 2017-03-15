@@ -1,32 +1,24 @@
 package com.kevinbigler.mariomakertracker.scraper;
 
-import com.google.common.collect.ImmutableMap;
 import com.kevinbigler.mariomakertracker.common.DateUtils;
 import com.kevinbigler.mariomakertracker.common.MMUtils;
 import com.kevinbigler.mariomakertracker.common.RestUtils;
 import com.kevinbigler.mariomakertracker.entity.Course;
 import com.kevinbigler.mariomakertracker.exception.CourseNotFoundException;
-import com.kevinbigler.mariomakertracker.exception.MissingScrapeValueException;
 import com.kevinbigler.mariomakertracker.pojo.CoursePageScrapePojo;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.http.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.lang.String.format;
 
 /**
  * Created by Kevin on 3/11/2017.
  */
-public class CoursePageScraper implements Scraper {
+public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
     private String nintendoId;
     private Course scrapedCourse;
 
@@ -37,7 +29,7 @@ public class CoursePageScraper implements Scraper {
     }
 
     @Override
-    public void scrape() throws Exception {
+    public CoursePageScrapePojo scrape() throws Exception {
         // check that the nintendoId is not null
         if (nintendoId == null || nintendoId.isEmpty()) {
             throw new IllegalStateException("Nintendo ID not set");
@@ -49,7 +41,7 @@ public class CoursePageScraper implements Scraper {
         }
 
         RestUtils restUtils = new RestUtils();
-        ResponseEntity<String> responseEntity = restUtils.getAsText(getCourseUrl());
+        ResponseEntity<String> responseEntity = restUtils.getAsTextHtml(getCourseUrl());
 
         if (responseEntity.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new CourseNotFoundException("Course does not exist on MarioMaker website");
@@ -91,7 +83,7 @@ public class CoursePageScraper implements Scraper {
 
         // gameskin
         // -- mode (SMB1, SMB2, SMW, NSMB)
-        coursePageScrape.setGameskin(getGameskin(document));
+        coursePageScrape.setGameskin(scrapeHelper.getGameskin(document));
 
         // image_full_url
         coursePageScrape.setMiiverseCommentsUrl(scrapeHelper.firstElementAttribute( document.select(".course-detail-wrapper a.miiverse"), "href" ));
@@ -169,6 +161,8 @@ public class CoursePageScraper implements Scraper {
 
         // starred_by_players_infos
 //        coursePageScrape.setStarredByPlayersInfos(scrapeHelper.getPlayersBasicInfos( document.select(".liked-body .user-wrapper") ));
+
+        return coursePageScrape;
     }
 
     public String getCourseUrl() {
@@ -177,22 +171,6 @@ public class CoursePageScraper implements Scraper {
         }
 
         return COURSE_URL_PREFIX + nintendoId;
-    }
-
-    private String getGameskin(Element element) throws MissingScrapeValueException {
-        // -- mode (SMB1, SMB2, SMW, NSMB)
-        Map<String, String> gameskinSelectors = new HashMap<>(new ImmutableMap.Builder<String, String>()
-                .put("SMB1", ".course-meta-info .common_gs_sb")
-                .put("SMB3", ".course-meta-info .common_gs_sb3")
-                .put("SMW", ".course-meta-info .common_gs_sw")
-                .put("NSMB", ".course-meta-info .common_gs_sbu")
-                .build());
-
-        return gameskinSelectors.entrySet().stream()
-                .filter(map -> ! element.select(map.getValue()).isEmpty())
-                .map(map -> map.getKey())
-                .findFirst()
-                .orElseThrow(() -> new MissingScrapeValueException("Gameskin could not be determined."));
     }
 
     public String getNintendoId() {

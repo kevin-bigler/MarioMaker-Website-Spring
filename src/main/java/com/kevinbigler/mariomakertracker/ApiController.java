@@ -28,7 +28,7 @@ public class ApiController {
     }
 
     @RequestMapping(path = "/courses/{nintendo_id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Course getCourseByNintendoId(@PathVariable(name = "nintendo_id") String nintendoId) {
+    public Course getCourseByNintendoId(@PathVariable(name = "nintendo_id") String nintendoId) throws Exception {
         return courseService.getCourseByNintendoId(nintendoId);
     }
 

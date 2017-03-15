@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Kevin on 3/12/2017.
  */
-public class CoursePageScrapePojo {
+public class CoursePageScrapePojo implements ScrapePojo {
     private String nintendoId;
 
     private String name;    // or "title"

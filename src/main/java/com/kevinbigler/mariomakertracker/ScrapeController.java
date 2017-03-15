@@ -1,5 +1,6 @@
 package com.kevinbigler.mariomakertracker;
 
+import com.kevinbigler.mariomakertracker.pojo.CoursePageScrapePojo;
 import com.kevinbigler.mariomakertracker.service.ScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,10 @@ public class ScrapeController {
     @Autowired
     private ScraperService scraperService;
 
-    @RequestMapping(value = "/course/{nintendo_id}", method = RequestMethod.GET)
-    public String scrapeCoursePage(@PathVariable("nintendo_id") String nintendoId) {
-        scraperService.scrapeCoursePage(nintendoId);
+    @RequestMapping(value = "/course/{nintendo_id}", method = RequestMethod.GET, produces = "application/json")
+    public CoursePageScrapePojo scrapeCoursePage(@PathVariable("nintendo_id") String nintendoId) throws Exception {
+        return scraperService.scrapeCoursePage(nintendoId);
 
-        return "scrapeCoursePage()";
+//        return "scrapeCoursePage()";
     }
 }

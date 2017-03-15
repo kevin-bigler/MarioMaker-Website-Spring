@@ -3,7 +3,7 @@ package com.kevinbigler.mariomakertracker.pojo;
 /**
  * Created by Kevin on 3/12/2017.
  */
-public class PlayerPreviewPojo {
+public class PlayerPreviewPojo implements ScrapePojo {
 
     private String nintendoId;
 

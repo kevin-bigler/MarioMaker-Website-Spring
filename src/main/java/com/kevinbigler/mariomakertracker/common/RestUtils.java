@@ -15,9 +15,10 @@ import java.util.UUID;
  */
 public class RestUtils {
 
-    public ResponseEntity<String> getAsText(String url) {
+    public ResponseEntity<String> getAsTextHtml(String url) {
+        System.out.println("getAsTextHtml(): " + url);
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.TEXT_PLAIN));
+        headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
 
         RestTemplate restTemplate = new RestTemplate();
 
