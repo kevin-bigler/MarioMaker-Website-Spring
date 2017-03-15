@@ -64,7 +64,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setCreatorNintendoId(scrapeHelper.getPlayerNintendoIdFromProfileLink( document.select(".creator a#mii") ));
 
         // player_info
-//        coursePageScrape.setPlayerInfo(scrapeHelper.getPlayerBasicInfo( document.select(".course-detail-wrapper") ));
+        coursePageScrape.setCreator(scrapeHelper.getPlayerPreview( document.select(".course-detail-wrapper") ));
 
         // title
         coursePageScrape.setName(scrapeHelper.firstElementText( document.select(".course-title") ));
@@ -91,9 +91,6 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         // -------------------------------------------------------------------------------------------------------------
         // data that changes over time
         // -------------------------------------------------------------------------------------------------------------
-
-        // player_info
-//        coursePageScrape.setPlayerInfo(scrapeHelper.getPlayerBasicInfo( document.select(".course-detail-wrapper") );
 
         // difficulty_rank
         coursePageScrape.setDifficultyRank(scrapeHelper.firstElementText( document.select(".course-header") ));
@@ -123,44 +120,38 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         // tag
         coursePageScrape.setTag(scrapeHelper.firstElementText( document.select(".course-tag") ));
 
-        // world_record_player_id
-        // this is only relevant if the player is in our database -- handle it somewhere else (it"s not parsed data)
-
         // world_record_player_nintendo_id
         coursePageScrape.setWorldRecordHolderNintendoId(scrapeHelper.getPlayerNintendoIdFromProfileLink( document.select(".fastest-time-wrapper a#mii") ));
 
         // world_record_player_info
-//        coursePageScrape.setWorldRecordPlayerInfo(scrapeHelper.getPlayerBasicInfo( document.select(".fastest-time-wrapper .user-wrapper") ));
+        coursePageScrape.setWorldRecordHolder(scrapeHelper.getPlayerPreview( document.select(".fastest-time-wrapper .user-wrapper") ));
 
         // world_record_time
         coursePageScrape.setWorldRecordTime(scrapeHelper.getTypographyNumber( document.select(".clear-time") ));
-
-        // first_clear_player_id
-        // this is only relevant if the player is in our database -- handle it somewhere else (it"s not parsed data)
 
         // first_clear_player_nintendo_id
         coursePageScrape.setFirstClearPlayerNintendoId(scrapeHelper.getPlayerNintendoIdFromProfileLink( document.select(".first-user a#mii") ));
 
         // first_clear_player_info
-//        coursePageScrape.setFirstClearPlayerInfo(scrapeHelper.getPlayerBasicInfo( document.select(".first-user .user-wrapper") ));
+        coursePageScrape.setFirstClearPlayer(scrapeHelper.getPlayerPreview( document.select(".first-user .user-wrapper") ));
 
         // recent_players_nintendo_ids
         coursePageScrape.setRecentPlayersNintendoIds(scrapeHelper.getAllPlayerNintendoIdsFromProfileLinks( document.select(".played-body .user-info-wrapper a#mii") ));
 
         // recent_players_infos
-//        coursePageScrape.setRecentPlayersInfos(scrapeHelper.getPlayersBasicInfos( document.select(".played-body .user-wrapper") ));
+        coursePageScrape.setRecentPlayers(scrapeHelper.getPlayersPreview( document.select(".played-body .user-wrapper") ));
 
         // cleared_by_players_nintendo_ids
         coursePageScrape.setClearedByPlayersNintendoIds(scrapeHelper.getAllPlayerNintendoIdsFromProfileLinks( document.select(".cleared-body .user-info-wrapper a#mii") ));
 
         // cleared_by_players_infos
-//        coursePageScrape.setClearedByPlayersInfos(scrapeHelper.getPlayersBasicInfos( document.select(".cleared-body .user-wrapper") ));
+        coursePageScrape.setClearedByPlayers(scrapeHelper.getPlayersPreview( document.select(".cleared-body .user-wrapper") ));
 
         // starred_by_players_nintendo_ids
         coursePageScrape.setStarredByPlayersNintendoIds(scrapeHelper.getAllPlayerNintendoIdsFromProfileLinks( document.select(".liked-body .user-info-wrapper a#mii") ));
 
         // starred_by_players_infos
-//        coursePageScrape.setStarredByPlayersInfos(scrapeHelper.getPlayersBasicInfos( document.select(".liked-body .user-wrapper") ));
+        coursePageScrape.setStarredByPlayers(scrapeHelper.getPlayersPreview( document.select(".liked-body .user-wrapper") ));
 
         return coursePageScrape;
     }

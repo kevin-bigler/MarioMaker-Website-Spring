@@ -11,6 +11,8 @@ public class CoursePageScrapePojo implements ScrapePojo {
 
     private String name;    // or "title"
 
+    private PlayerPreviewPojo creator;
+
     private String creatorNintendoId;
 
     private String mainImageUrl;
@@ -79,6 +81,14 @@ public class CoursePageScrapePojo implements ScrapePojo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public PlayerPreviewPojo getCreator() {
+        return creator;
+    }
+
+    public void setCreator(PlayerPreviewPojo creator) {
+        this.creator = creator;
     }
 
     public String getCreatorNintendoId() {

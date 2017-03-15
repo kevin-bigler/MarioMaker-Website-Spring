@@ -2,6 +2,7 @@ package com.kevinbigler.mariomakertracker.scraper;
 
 import com.google.common.collect.ImmutableMap;
 import com.kevinbigler.mariomakertracker.exception.MissingScrapeValueException;
+import com.kevinbigler.mariomakertracker.pojo.PlayerPreviewPojo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.helper.StringUtil;
@@ -28,6 +29,74 @@ public class ScrapeHelper {
         }
 
         return "";
+    }
+
+    public boolean hasElement(Element source, String searchCssSelector) {
+        Elements els = source.select(searchCssSelector);
+        return els != null && ! els.isEmpty();
+    }
+
+    public List<PlayerPreviewPojo> getPlayersPreview(Elements playerWrapperElements) {
+        /*
+          Example from a "Cleared by" list item:
+          <div class="user-wrapper">
+            <div class="mii-wrapper">
+              <a id="mii" class="icon-mii link bg-white" href="/profile/Itsaname42?type=posted"><img src="http://mii-images.cdn.nintendo.net/1f1x0xp88j36o_normal_face.png" alt="1f1x0xp88j36o normal face"></a>
+            </div>
+            <div class="user-info">
+              <div class="flag US"></div>
+              <div class="name">Aaron</div>
+            </div>
+          </div>
+        */
+
+        List<PlayerPreviewPojo> players = new ArrayList<>();
+
+        if (playerWrapperElements != null && ! playerWrapperElements.isEmpty()) {
+            playerWrapperElements.forEach((el) -> {
+                PlayerPreviewPojo playerPreview = getPlayerPreview(el);
+                if (playerPreview != null)
+                    players.add(playerPreview);
+            });
+        }
+
+        return players;
+    }
+
+    public PlayerPreviewPojo getPlayerPreview(Elements playerWrapperElement) {
+        if (playerWrapperElement != null && ! playerWrapperElement.isEmpty())
+            return getPlayerPreview(playerWrapperElement.first());
+
+        return null;
+    }
+
+    public PlayerPreviewPojo getPlayerPreview(Element playerWrapperElement) {
+        if (playerWrapperElement == null)
+            return null;
+
+        PlayerPreviewPojo player = new PlayerPreviewPojo();
+
+        // name
+        player.setName(firstElementText( playerWrapperElement.select(".name") ));
+        // player["name"] = $this->common->forceUtf8(player["name"]); // TODO figure out how to get special characters to show up / save (instead of showing as "?")
+
+        // nintendo_id
+        player.setNintendoId(getPlayerNintendoIdFromProfileLink( playerWrapperElement.select("a#mii") ));
+
+        // flag
+        String flagElementClass = firstElementAttribute( playerWrapperElement.select(".flag"), "class" );
+        player.setNation(StringUtils.substringAfter(flagElementClass, "flag "));
+
+        // profile_image_url UID prefix
+        // example: http://mii-images.cdn.nintendo.net/278vvda1i4jag_normal_face.png
+        // -> 278vvda1i4jag
+        // -> so after the last / until the next _
+        String profileImageUrl = firstElementAttribute( playerWrapperElement.select(".mii-wrapper img"), "src" );
+        String profileImagePrefix = StringUtils.substringAfterLast(profileImageUrl, "/");
+        profileImagePrefix = StringUtils.substringBefore(profileImagePrefix, "_");
+        player.setProfileImageUid(profileImagePrefix);
+
+        return player;
     }
 
     public String getPlayerNintendoIdFromProfileLink(Elements linkElements) {

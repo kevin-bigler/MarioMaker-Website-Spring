@@ -28,10 +28,10 @@ public class RestUtils {
 
         System.out.println("HTTP Status: " + response.getStatusCode().toString());
 
-        System.out.println("Body:");
-        System.out.println("---------------------------------");
-        System.out.println(response.getBody());
-        System.out.println("---------------------------------");
+//        System.out.println("Body:");
+//        System.out.println("---------------------------------");
+//        System.out.println(response.getBody());
+//        System.out.println("---------------------------------");
 
         return response;
     }
