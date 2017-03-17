@@ -15,21 +15,21 @@ import java.util.*;
  * Created by Kevin on 3/14/2017.
  */
 public class ScrapeHelper {
-    public String firstElementText(Elements el) {
-        if (el != null && ! el.isEmpty()) {
-            return el.first().text();
-        }
-
-        return "";
-    }
-
-    public String firstElementAttribute(Elements el, String attr) {
-        if (el != null && ! el.isEmpty()) {
-            return el.first().attr(attr);
-        }
-
-        return "";
-    }
+//    public String firstXElementText(Elements el) {
+//        if (el != null && ! el.isEmpty()) {
+//            return el.first().text();
+//        }
+//
+//        return "";
+//    }
+//
+//    public String firstXElementAttribute(Elements el, String attr) {
+//        if (el != null && ! el.isEmpty()) {
+//            return el.first().attr(attr);
+//        }
+//
+//        return "";
+//    }
 
     public boolean hasElement(Element source, String searchCssSelector) {
         Elements els = source.select(searchCssSelector);
@@ -77,21 +77,21 @@ public class ScrapeHelper {
         PlayerPreviewPojo player = new PlayerPreviewPojo();
 
         // name
-        player.setName(firstElementText( playerWrapperElement.select(".name") ));
+        player.setName( playerWrapperElement.select(".name").text() );
         // player["name"] = $this->common->forceUtf8(player["name"]); // TODO figure out how to get special characters to show up / save (instead of showing as "?")
 
         // nintendo_id
         player.setNintendoId(getPlayerNintendoIdFromProfileLink( playerWrapperElement.select("a#mii") ));
 
         // flag
-        String flagElementClass = firstElementAttribute( playerWrapperElement.select(".flag"), "class" );
+        String flagElementClass = playerWrapperElement.select(".flag").attr("class");
         player.setNation(StringUtils.substringAfter(flagElementClass, "flag "));
 
         // profile_image_url UID prefix
         // example: http://mii-images.cdn.nintendo.net/278vvda1i4jag_normal_face.png
         // -> 278vvda1i4jag
         // -> so after the last / until the next _
-        String profileImageUrl = firstElementAttribute( playerWrapperElement.select(".mii-wrapper img"), "src" );
+        String profileImageUrl = playerWrapperElement.select(".mii-wrapper img").attr("abs:src");
         String profileImagePrefix = StringUtils.substringAfterLast(profileImageUrl, "/");
         profileImagePrefix = StringUtils.substringBefore(profileImagePrefix, "_");
         player.setProfileImageUid(profileImagePrefix);

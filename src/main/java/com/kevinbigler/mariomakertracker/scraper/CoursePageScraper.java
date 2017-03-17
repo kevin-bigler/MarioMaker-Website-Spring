@@ -67,16 +67,16 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setCreator(scrapeHelper.getPlayerPreview( document.select(".course-detail-wrapper") ));
 
         // title
-        coursePageScrape.setName(scrapeHelper.firstElementText( document.select(".course-title") ));
+        coursePageScrape.setName(document.select(".course-title").text());
 
         // image_url
-        coursePageScrape.setMainImageUrl(scrapeHelper.firstElementAttribute( document.select("img.course-image"), "src" ));
+        coursePageScrape.setMainImageUrl(document.select("img.course-image").attr("abs:src"));
 
         // image_full_url
-        coursePageScrape.setFullImageUrl(scrapeHelper.firstElementAttribute( document.select("img.course-image-full"), "src" ));
+        coursePageScrape.setFullImageUrl(document.select("img.course-image-full").attr("abs:src"));
 
         // upload_date
-        String uploadDateSource = scrapeHelper.firstElementText( document.select(".created_at") );
+        String uploadDateSource = document.select(".created_at").text();
         // example: 10/17/2016
         Date uploadDate = DateUtils.createFromString("m/d/Y", uploadDateSource);
         coursePageScrape.setUploadDate(uploadDate);
@@ -86,14 +86,14 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setGameskin(scrapeHelper.getGameskin(document));
 
         // image_full_url
-        coursePageScrape.setMiiverseCommentsUrl(scrapeHelper.firstElementAttribute( document.select(".course-detail-wrapper a.miiverse"), "href" ));
+        coursePageScrape.setMiiverseCommentsUrl(document.select(".course-detail-wrapper a.miiverse").attr("abs:href"));
 
         // -------------------------------------------------------------------------------------------------------------
         // data that changes over time
         // -------------------------------------------------------------------------------------------------------------
 
         // difficulty_rank
-        coursePageScrape.setDifficultyRank(scrapeHelper.firstElementText( document.select(".course-header") ));
+        coursePageScrape.setDifficultyRank(document.select(".course-header").text());
 
         // clear_rate
         coursePageScrape.setClearRate(scrapeHelper.getTypographyNumberAsDouble( document.select(".clear-rate") ));
@@ -118,7 +118,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setNumberComments(scrapeHelper.getTypographyNumberAsInteger( document.select(".comment-count") ));
 
         // tag
-        coursePageScrape.setTag(scrapeHelper.firstElementText( document.select(".course-tag") ));
+        coursePageScrape.setTag(document.select(".course-tag").text());
 
         // world_record_player_nintendo_id
         coursePageScrape.setWorldRecordHolderNintendoId(scrapeHelper.getPlayerNintendoIdFromProfileLink( document.select(".fastest-time-wrapper a#mii") ));
