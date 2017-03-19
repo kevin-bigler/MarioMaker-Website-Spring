@@ -67,7 +67,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setCreator(scrapeHelper.getPlayerPreview( document.select(".course-detail-wrapper") ));
 
         // title
-        coursePageScrape.setName(document.select(".course-title").text());
+        coursePageScrape.setName(document.select(".course-title").text());  // TODO change this to firstText() or w/e (jsoup will concat all found elements' text otherwise)
 
         // image_url
         coursePageScrape.setMainImageUrl(document.select("img.course-image").attr("abs:src"));
@@ -109,6 +109,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
 
         // number_clears
         String clearRatio = scrapeHelper.getTypographyNumber( document.select(".tried-count") );
+        System.out.println("clearRatio: " + clearRatio);
         coursePageScrape.setNumberClears(Integer.valueOf(StringUtils.substringBefore(clearRatio, "/")));
 
         // number_attempts
@@ -118,7 +119,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
         coursePageScrape.setNumberComments(scrapeHelper.getTypographyNumberAsInteger( document.select(".comment-count") ));
 
         // tag
-        coursePageScrape.setTag(document.select(".course-tag").text());
+        coursePageScrape.setTag(document.select(".course-tag").text());  // TODO change this to firstText() or w/e (jsoup will concat all found elements' text otherwise)
 
         // world_record_player_nintendo_id
         coursePageScrape.setWorldRecordHolderNintendoId(scrapeHelper.getPlayerNintendoIdFromProfileLink( document.select(".fastest-time-wrapper a#mii") ));

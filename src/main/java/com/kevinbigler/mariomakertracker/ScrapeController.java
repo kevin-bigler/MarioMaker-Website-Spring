@@ -32,7 +32,7 @@ public class ScrapeController {
 //        return "scrapeCoursePage()";
     }
 
-    @RequestMapping(value = "/course/{nintendo_id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/course/{nintendo_id}/live", method = RequestMethod.GET, produces = "application/json")
     public CoursePageScrapePojo getLiveCourseData(@PathVariable("nintendo_id") String nintendoId) throws Exception {
         CoursePageScrapePojo coursePageScrape = scraperService.scrapeCoursePage(nintendoId);
 

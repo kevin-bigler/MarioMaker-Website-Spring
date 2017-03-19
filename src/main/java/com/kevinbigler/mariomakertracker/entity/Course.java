@@ -14,6 +14,8 @@ import java.util.Set;
 @Entity
 public class Course {
 
+    // TODO add prePersist that sets created and updated property values (only do created if id == null)
+
     @Id
     @GeneratedValue
     private Long id;

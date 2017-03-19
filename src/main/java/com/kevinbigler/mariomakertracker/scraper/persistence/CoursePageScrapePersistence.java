@@ -4,8 +4,12 @@ import com.kevinbigler.mariomakertracker.entity.Course;
 import com.kevinbigler.mariomakertracker.entity.repository.CourseRepository;
 import com.kevinbigler.mariomakertracker.entity.repository.PlayerRepository;
 import com.kevinbigler.mariomakertracker.pojo.CoursePageScrapePojo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
 
 /**
  * Created by Kevin on 3/16/2017.
@@ -21,7 +25,7 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
 
     @Override
     public void persist(CoursePageScrapePojo coursePageScrape) throws Exception {
-        // TODO save the scraped data
+        // save the scraped data
         // 1. save the course
         // 2. save the course snapshot
         // 3. save the course preview (not sure if separate from course)
@@ -34,15 +38,39 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
     }
 
     private void saveCourse(CoursePageScrapePojo coursePageScrape) {
-        String nintendoId = coursePageScrape.getNintendoId();
-
-        Course course = courseRepository.findByNintendoId(nintendoId);
+        Course course = courseRepository.findByNintendoId(coursePageScrape.getNintendoId());
         if (course == null) {
             course = new Course();
-            course.setNintendoId(nintendoId);
+            course.setNintendoId(coursePageScrape.getNintendoId());
+            course.setCreated(new Timestamp(System.currentTimeMillis()));
         }
 
-        // TODO other fields here
+//        course.setName(coursePageScrape.getName());
+//        course.setCreatorNintendoId(coursePageScrape.getCreatorNintendoId());
+//        course.setMainImageUrl(coursePageScrape.getMainImageUrl());
+//        course.setFullImageUrl(coursePageScrape.getFullImageUrl());
+//        course.setUploadDate(coursePageScrape.getUploadDate());
+//        course.setGameskin(coursePageScrape.getGameskin());
+//        course.setMiiverseCommentsUrl(coursePageScrape.getMiiverseCommentsUrl());
+//        course.setWorldRecordTime(coursePageScrape.getWorldRecordTime());
+//        course.setClearRate(coursePageScrape.getClearRate());
+//        course.setDifficultyRank(coursePageScrape.getDifficultyRank());
+//        course.setNumberStars(coursePageScrape.getNumberStars());
+//        course.setNumberFootprints(coursePageScrape.getNumberFootprints());
+//        course.setNumberShares(coursePageScrape.getNumberShares());
+//        course.setNumberClears(coursePageScrape.getNumberClears());
+//        course.setNumberAttempts(coursePageScrape.getNumberAttempts());
+//        course.setNumberComments(coursePageScrape.getNumberComments());
+//        course.setTag(coursePageScrape.getTag());
+//        course.setWorldRecordHolderNintendoId(coursePageScrape.getWorldRecordHolderNintendoId());
+//        course.setFirstClearPlayerNintendoId(coursePageScrape.getFirstClearPlayerNintendoId());
+        BeanUtils.copyProperties(coursePageScrape, course, "recentPlayersNintendoIds", "clearedByPlayersNintendoIds", "starredByPlayersNintendoIds");
+        course.setRecentPlayersNintendoIds( StringUtils.join(coursePageScrape.getRecentPlayersNintendoIds(), ",") );
+        course.setClearedByPlayersNintendoIds( StringUtils.join(coursePageScrape.getClearedByPlayersNintendoIds(), ",") );
+        course.setStarredByPlayersNintendoIds( StringUtils.join(coursePageScrape.getStarredByPlayersNintendoIds(), ",") );
+        course.setUpdated(new Timestamp(System.currentTimeMillis()));
+
+        courseRepository.save(course);
     }
 
     private void saveCourseSnapshot(CoursePageScrapePojo coursePageScrape) {

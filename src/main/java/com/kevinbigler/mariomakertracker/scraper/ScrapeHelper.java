@@ -15,7 +15,7 @@ import java.util.*;
  * Created by Kevin on 3/14/2017.
  */
 public class ScrapeHelper {
-//    public String firstXElementText(Elements el) {
+//    public String firstElementText(Elements el) {
 //        if (el != null && ! el.isEmpty()) {
 //            return el.first().text();
 //        }
@@ -23,7 +23,7 @@ public class ScrapeHelper {
 //        return "";
 //    }
 //
-//    public String firstXElementAttribute(Elements el, String attr) {
+//    public String firstElementAttribute(Elements el, String attr) {
 //        if (el != null && ! el.isEmpty()) {
 //            return el.first().attr(attr);
 //        }
@@ -122,6 +122,7 @@ public class ScrapeHelper {
     }
 
     public String getTypographyNumber(Elements els) {
+        // TODO create a test for this function (can use the below HTML)
         if (els == null || els.isEmpty()) {
             return "0";
         }
@@ -147,7 +148,7 @@ public class ScrapeHelper {
                 .build();
 
         List<String> resultTokens = new ArrayList<>();
-        Elements typographyElements = els.select(".typography");
+        Elements typographyElements = element.select(".typography");
 
         typographyElements.forEach((el) -> {
             List<String> classes = getClasses(el);
@@ -163,6 +164,7 @@ public class ScrapeHelper {
             });
         });
 
+        System.out.println("resultTokens: " + resultTokens);
         String resultString = StringUtils.join(resultTokens, "");
 
         return resultString;
