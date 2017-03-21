@@ -45,25 +45,7 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
             course.setCreated(new Timestamp(System.currentTimeMillis()));
         }
 
-//        course.setName(coursePageScrape.getName());
-//        course.setCreatorNintendoId(coursePageScrape.getCreatorNintendoId());
-//        course.setMainImageUrl(coursePageScrape.getMainImageUrl());
-//        course.setFullImageUrl(coursePageScrape.getFullImageUrl());
-//        course.setUploadDate(coursePageScrape.getUploadDate());
-//        course.setGameskin(coursePageScrape.getGameskin());
-//        course.setMiiverseCommentsUrl(coursePageScrape.getMiiverseCommentsUrl());
-//        course.setWorldRecordTime(coursePageScrape.getWorldRecordTime());
-//        course.setClearRate(coursePageScrape.getClearRate());
-//        course.setDifficultyRank(coursePageScrape.getDifficultyRank());
-//        course.setNumberStars(coursePageScrape.getNumberStars());
-//        course.setNumberFootprints(coursePageScrape.getNumberFootprints());
-//        course.setNumberShares(coursePageScrape.getNumberShares());
-//        course.setNumberClears(coursePageScrape.getNumberClears());
-//        course.setNumberAttempts(coursePageScrape.getNumberAttempts());
-//        course.setNumberComments(coursePageScrape.getNumberComments());
-//        course.setTag(coursePageScrape.getTag());
-//        course.setWorldRecordHolderNintendoId(coursePageScrape.getWorldRecordHolderNintendoId());
-//        course.setFirstClearPlayerNintendoId(coursePageScrape.getFirstClearPlayerNintendoId());
+        // copies properties by name from coursePageScrape to course
         BeanUtils.copyProperties(coursePageScrape, course, "recentPlayersNintendoIds", "clearedByPlayersNintendoIds", "starredByPlayersNintendoIds");
         course.setRecentPlayersNintendoIds( StringUtils.join(coursePageScrape.getRecentPlayersNintendoIds(), ",") );
         course.setClearedByPlayersNintendoIds( StringUtils.join(coursePageScrape.getClearedByPlayersNintendoIds(), ",") );
