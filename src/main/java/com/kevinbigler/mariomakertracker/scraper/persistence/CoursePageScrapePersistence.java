@@ -1,9 +1,15 @@
 package com.kevinbigler.mariomakertracker.scraper.persistence;
 
 import com.kevinbigler.mariomakertracker.entity.Course;
+import com.kevinbigler.mariomakertracker.entity.CourseSnapshot;
+import com.kevinbigler.mariomakertracker.entity.Player;
 import com.kevinbigler.mariomakertracker.entity.repository.CourseRepository;
+import com.kevinbigler.mariomakertracker.entity.repository.CourseSnapshotRepository;
 import com.kevinbigler.mariomakertracker.entity.repository.PlayerRepository;
 import com.kevinbigler.mariomakertracker.pojo.CoursePageScrapePojo;
+import com.kevinbigler.mariomakertracker.pojo.PlayerPreviewPojo;
+import com.kevinbigler.mariomakertracker.service.CourseService;
+import com.kevinbigler.mariomakertracker.service.PlayerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +29,15 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
     @Autowired
     PlayerRepository playerRepository;
 
+    @Autowired
+    CourseSnapshotRepository courseSnapshotRepository;
+
+    @Autowired
+    PlayerService playerService;
+
+    @Autowired
+    CourseService courseService;
+
     @Override
     public void persist(CoursePageScrapePojo coursePageScrape) throws Exception {
         // save the scraped data
@@ -35,6 +50,7 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
         saveCourseSnapshot(coursePageScrape);
         saveCoursePreview(coursePageScrape);
         savePlayers(coursePageScrape);
+        saveRelationships(coursePageScrape);
     }
 
     private void saveCourse(CoursePageScrapePojo coursePageScrape) {
@@ -56,7 +72,21 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
     }
 
     private void saveCourseSnapshot(CoursePageScrapePojo coursePageScrape) {
-        // TODO
+        CourseSnapshot courseSnapshot = courseSnapshotRepository.findByNintendoId(coursePageScrape.getNintendoId());
+        if (courseSnapshot == null) {
+            courseSnapshot = new CourseSnapshot();
+            courseSnapshot.setNintendoId(coursePageScrape.getNintendoId());
+            courseSnapshot.setCreated(new Timestamp(System.currentTimeMillis()));
+        }
+
+        // copies properties by name from coursePageScrape to courseSnapshot
+        BeanUtils.copyProperties(coursePageScrape, courseSnapshot, "recentPlayersNintendoIds", "clearedByPlayersNintendoIds", "starredByPlayersNintendoIds");
+        courseSnapshot.setRecentPlayersNintendoIds( StringUtils.join(coursePageScrape.getRecentPlayersNintendoIds(), ",") );
+        courseSnapshot.setClearedByPlayersNintendoIds( StringUtils.join(coursePageScrape.getClearedByPlayersNintendoIds(), ",") );
+        courseSnapshot.setStarredByPlayersNintendoIds( StringUtils.join(coursePageScrape.getStarredByPlayersNintendoIds(), ",") );
+        courseSnapshot.setUpdated(new Timestamp(System.currentTimeMillis()));
+
+        courseSnapshotRepository.save(courseSnapshot);
     }
 
     private void saveCoursePreview(CoursePageScrapePojo coursePageScrape) {
@@ -64,6 +94,25 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
     }
 
     private void savePlayers(CoursePageScrapePojo coursePageScrape) {
-        // TODO
+        // save each player that we have info for
+        // - creator, first clear, world record holder
+        // - starred by, cleared by, recent players
+        playerService.savePlayer(coursePageScrape.getCreator());
+        playerService.savePlayer(coursePageScrape.getFirstClearPlayer());
+        playerService.savePlayer(coursePageScrape.getWorldRecordHolder());
+
+        if (coursePageScrape.getStarredByPlayers() != null) {
+            coursePageScrape.getStarredByPlayers().forEach(player -> playerService.savePlayer(player));
+        }
+        if (coursePageScrape.getClearedByPlayers() != null) {
+            coursePageScrape.getClearedByPlayers().forEach(player -> playerService.savePlayer(player));
+        }
+        if (coursePageScrape.getRecentPlayers() != null) {
+            coursePageScrape.getRecentPlayers().forEach(player -> playerService.savePlayer(player));
+        }
+    }
+
+    private void saveRelationships(CoursePageScrapePojo coursePageScrape) {
+        // TODO save the relationship of this course and coursesnapshot to those players
     }
 }

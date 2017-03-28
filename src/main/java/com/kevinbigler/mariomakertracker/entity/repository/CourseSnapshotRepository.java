@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
  * Created by Kevin on 2/25/2017.
  */
 public interface CourseSnapshotRepository extends CrudRepository<CourseSnapshot, Long> {
+    CourseSnapshot findByNintendoId(String nintendoId);
 }

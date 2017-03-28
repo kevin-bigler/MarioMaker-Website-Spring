@@ -24,5 +24,7 @@ public class GoogleSearchService {
         RestUtils restUtils = new RestUtils();
         String searchUrl = GOOGLE_SEARCH_API_URL + searchTerm;    // TODO make this
         restUtils.getAsTextHtml(searchUrl);
+
+        return null;
     }
 }

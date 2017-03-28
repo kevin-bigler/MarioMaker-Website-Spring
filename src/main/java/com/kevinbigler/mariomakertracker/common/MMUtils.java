@@ -12,4 +12,9 @@ public class MMUtils {
 
         return nintendoId.matches(regex);
     }
+
+    public static boolean isPlayerNintendoIdValid(String nintendoId) {
+        // TODO not sure what characters are allowed, and also what the max character limit is
+        return nintendoId != null && ! nintendoId.isEmpty();
+    }
 }

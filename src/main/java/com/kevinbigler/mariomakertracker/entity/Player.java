@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 /**
  * Created by Kevin on 2/25/2017.
@@ -22,6 +23,10 @@ public class Player {
     private String nation;  // 2-character country code -- determines flag shown on MM website
 
     private String profileImageUid; // used as a prefix for accessing this player's profile images (various states: normal, happy, excited, etc)
+
+    private Timestamp created;
+
+    private Timestamp updated;
 
     public Long getId() {
         return id;
@@ -61,5 +66,21 @@ public class Player {
 
     public void setProfileImageUid(String profileImageUid) {
         this.profileImageUid = profileImageUid;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public Timestamp getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Timestamp updated) {
+        this.updated = updated;
     }
 }
