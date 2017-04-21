@@ -77,8 +77,7 @@ public class CoursePageScraper implements Scraper<CoursePageScrapePojo> {
 
         // upload_date
         String uploadDateSource = document.select(".created_at").text();
-        // example: 10/17/2016
-        Date uploadDate = DateUtils.createFromString("m/d/Y", uploadDateSource);
+        Date uploadDate = MMUtils.parseDateString(uploadDateSource);
         coursePageScrape.setUploadDate(uploadDate);
 
         // gameskin

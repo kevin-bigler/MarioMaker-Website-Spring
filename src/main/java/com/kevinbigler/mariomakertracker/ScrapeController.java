@@ -29,7 +29,6 @@ public class ScrapeController {
         coursePageScrapePersistence.persist(coursePageScrape);
 
         return coursePageScrape;
-//        return "scrapeCoursePage()";
     }
 
     @RequestMapping(value = "/course/{nintendo_id}/live", method = RequestMethod.GET, produces = "application/json")
@@ -39,6 +38,5 @@ public class ScrapeController {
         coursePageScrapePersistence.persist(coursePageScrape);
 
         return coursePageScrape;
-//        return "scrapeCoursePage()";
     }
 }

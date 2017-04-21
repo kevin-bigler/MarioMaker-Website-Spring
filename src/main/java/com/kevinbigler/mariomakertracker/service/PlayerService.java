@@ -22,8 +22,8 @@ public class PlayerService {
     public Player savePlayer(PlayerPreviewPojo playerPreviewPojo) {
         if (playerPreviewPojo == null) {
             throw new IllegalArgumentException("playerPreviewPojo is NULL");
-        } else if (MMUtils.isPlayerNintendoIdValid(playerPreviewPojo.getNintendoId())) {
-            throw new IllegalArgumentException("playerPreviewPojo's nintendoId is invalid");
+        } else if ( ! MMUtils.isPlayerNintendoIdValid(playerPreviewPojo.getNintendoId()) ) {
+            throw new IllegalArgumentException("playerPreviewPojo's nintendoId is invalid: " + playerPreviewPojo.getNintendoId());
         }
 
         Player player = playerRepository.findByNintendoId(playerPreviewPojo.getNintendoId());

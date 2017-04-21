@@ -91,6 +91,7 @@ public class CoursePageScrapePersistence implements ScrapePersistence<CoursePage
 
     private void saveCoursePreview(CoursePageScrapePojo coursePageScrape) {
         // TODO
+        // will this be a separate table, or a subset of info from the Course table?
     }
 
     private void savePlayers(CoursePageScrapePojo coursePageScrape) {

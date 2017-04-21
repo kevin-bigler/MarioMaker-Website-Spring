@@ -3,6 +3,7 @@ package com.kevinbigler.mariomakertracker.common;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -17,5 +18,10 @@ public class DateUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Date daysAgo(int numberDaysAgo) {
+        LocalDate daysAgo = LocalDate.now().minusDays(numberDaysAgo);
+        return DateUtils.createFromString("yyyy-MM-dd", daysAgo.toString());
     }
 }
